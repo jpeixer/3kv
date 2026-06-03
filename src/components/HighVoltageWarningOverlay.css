@@ -1,0 +1,59 @@
+.hv-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.hv-border {
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 42px var(--hv-color);
+  animation: hv-flash 1s step-end infinite;
+}
+
+.hv-border-yellow {
+  --hv-color: var(--color-warning);
+  animation-delay: 0s;
+}
+
+.hv-border-red {
+  --hv-color: var(--color-danger);
+  animation-delay: 0.5s;
+}
+
+@keyframes hv-flash {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.hv-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0.95rem 1rem;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  animation: hv-flash 1s step-end infinite;
+}
+
+.hv-banner-yellow {
+  background: var(--color-warning);
+  animation-delay: 0s;
+}
+
+.hv-banner-red {
+  background: var(--color-danger);
+  animation-delay: 0.5s;
+}

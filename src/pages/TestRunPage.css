@@ -1,0 +1,113 @@
+.test-run-page {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  padding: 4rem 2rem 2rem;
+}
+
+.test-run-content {
+  text-align: center;
+  max-width: 720px;
+  width: 100%;
+  z-index: 1;
+}
+
+.test-run-gauges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem 2rem;
+  margin: 0 0 1.25rem;
+}
+
+.test-run-label {
+  margin: 0;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+}
+
+.test-run-batch-size {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+}
+
+.test-run-serials {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.test-run-serials li {
+  padding: 0.15rem 0;
+}
+
+.test-run-serials-active li {
+  color: var(--color-warning);
+}
+
+.test-run-idle {
+  margin-bottom: 1rem;
+}
+
+.test-run-idle-label {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.test-run-serials-idle li {
+  color: var(--color-text-muted);
+  font-weight: 400;
+  font-size: 0.95rem;
+}
+
+.test-run-winding {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: var(--color-text-muted);
+}
+
+.test-progress-bar {
+  height: 8px;
+  background: var(--color-surface-elevated);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.test-progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.test-countdown-ramp {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text-muted);
+}
+
+.test-countdown {
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-warning);
+}
+
+.test-countdown-label {
+  margin: 0.5rem 0 2rem;
+  color: var(--color-text-muted);
+}
+
+.test-run-content .btn-danger {
+  min-width: 160px;
+}

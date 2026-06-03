@@ -1,0 +1,68 @@
+.analog-gauge {
+  text-align: center;
+  min-width: 180px;
+}
+
+.analog-gauge-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.25rem;
+}
+
+.analog-gauge-svg {
+  width: 100%;
+  max-width: 220px;
+  display: block;
+  margin: 0 auto;
+}
+
+.analog-gauge-track {
+  stroke: var(--color-surface-elevated);
+  stroke-width: 12;
+  stroke-linecap: round;
+}
+
+.analog-gauge-fill {
+  stroke: var(--color-primary);
+  stroke-width: 12;
+  stroke-linecap: round;
+}
+
+.analog-gauge-marker {
+  stroke: var(--color-warning);
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+}
+
+.analog-gauge-marker-label {
+  fill: var(--color-warning);
+  font-size: 9px;
+  text-anchor: middle;
+  font-weight: 600;
+}
+
+.analog-gauge-needle {
+  stroke: var(--color-text);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.analog-gauge-hub {
+  fill: var(--color-text);
+}
+
+.analog-gauge-scale {
+  fill: var(--color-text-muted);
+  font-size: 9px;
+}
+
+.analog-gauge-reading {
+  margin: 0.25rem 0 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,24 @@
+.duration-selector .duration-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.duration-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.duration-preset {
+  flex: 1;
+  min-width: 4rem;
+  padding: 0.65rem 0.75rem;
+  min-height: auto;
+  font-size: 1rem;
+}
+
+.duration-preset.active {
+  border-color: var(--color-primary);
+  background: rgba(59, 110, 168, 0.25);
+}

@@ -1,0 +1,29 @@
+.modal-scan {
+  max-width: 520px;
+}
+
+.scan-hint {
+  margin: 0 0 1rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.scan-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.scan-preview video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.scan-actions {
+  flex-wrap: wrap;
+}
