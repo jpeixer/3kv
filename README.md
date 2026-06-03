@@ -38,7 +38,7 @@ npm run preview
 
 After push to `main`, GitHub Actions deploys to:
 
-**https://SEU-USUARIO.github.io/3kv/**
+**https://jpeixer.github.io/3kv/**
 
 First-time publish from this machine:
 
