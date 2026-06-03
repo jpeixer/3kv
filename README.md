@@ -38,23 +38,22 @@ npm run preview
 
 After push to `main`, GitHub Actions deploys to:
 
-**https://joao-peixer.github.io/3kv/** (replace `joao-peixer` with your GitHub username if different)
+**https://&lt;seu-usuario&gt;.github.io/3kv/**
 
 First-time publish from this machine:
 
 ```powershell
-gh auth login
-gh repo create 3kv --public --source=. --remote=origin --push
-gh api repos/{owner}/3kv/pages -X POST -f build_type=workflow
+.\scripts\publish-github.ps1
 ```
 
-Or push an existing remote:
+Or manually:
 
 ```powershell
-git push -u origin main
+gh auth login
+gh repo create 3kv --public --source=. --remote=origin --push
 ```
 
-Enable **Settings → Pages → Build and deployment → GitHub Actions** on the repository if the site does not appear after the first workflow run.
+Then in the repo: **Settings → Pages → Build and deployment → GitHub Actions**.
 
 ## Project structure
 
