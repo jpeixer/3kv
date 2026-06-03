@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import type { SerialItem, SerialStatus } from '../types/test';
+import type { BatchPhoto, SerialItem, SerialStatus } from '../types/test';
+import { formatBatchNumber } from '../utils/batchNumber';
 
 const DEMO_ITEMS: SerialItem[] = [
   { id: 'demo-1', serialNumber: 'TR-2024-00142', windingCount: 3, status: 'pending' },
@@ -12,6 +13,8 @@ type TestStore = {
   selectedIds: Set<string>;
   durationPerWindingSec: number;
   completedSerialNumbers: string[];
+  currentBatchNumber: string | null;
+  batchPhotos: BatchPhoto[];
 
   setDuration: (seconds: number) => void;
   toggleSelected: (id: string) => void;
@@ -25,6 +28,10 @@ type TestStore = {
   setCompletedSerialNumbers: (serials: string[]) => void;
   clearCompleted: () => void;
   getSelectedItems: () => SerialItem[];
+  startBatch: () => string;
+  resetBatch: () => void;
+  addBatchPhoto: (photo: Omit<BatchPhoto, 'id' | 'batchNumber'>) => void;
+  removeBatchPhoto: (id: string) => void;
 };
 
 function generateId(): string {
@@ -36,6 +43,8 @@ export const useTestStore = create<TestStore>((set, get) => ({
   selectedIds: new Set<string>(),
   durationPerWindingSec: 5,
   completedSerialNumbers: [],
+  currentBatchNumber: null,
+  batchPhotos: [],
 
   setDuration: (seconds) => {
     const allowed = [2, 5, 60];
@@ -110,10 +119,41 @@ export const useTestStore = create<TestStore>((set, get) => ({
 
   setCompletedSerialNumbers: (serials) => set({ completedSerialNumbers: serials }),
 
-  clearCompleted: () => set({ completedSerialNumbers: [] }),
+  clearCompleted: () =>
+    set({ completedSerialNumbers: [], batchPhotos: [], currentBatchNumber: null }),
 
   getSelectedItems: () => {
     const { serialItems, selectedIds } = get();
     return serialItems.filter((i) => selectedIds.has(i.id));
   },
+
+  startBatch: () => {
+    const batchNumber = formatBatchNumber();
+    set({ currentBatchNumber: batchNumber, batchPhotos: [] });
+    return batchNumber;
+  },
+
+  resetBatch: () => set({ currentBatchNumber: null, batchPhotos: [] }),
+
+  addBatchPhoto: (photo) => {
+    const batchNumber = get().currentBatchNumber ?? formatBatchNumber();
+    if (!get().currentBatchNumber) {
+      set({ currentBatchNumber: batchNumber });
+    }
+    set((state) => ({
+      batchPhotos: [
+        ...state.batchPhotos,
+        {
+          ...photo,
+          batchNumber,
+          id: `photo-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        },
+      ],
+    }));
+  },
+
+  removeBatchPhoto: (id) =>
+    set((state) => ({
+      batchPhotos: state.batchPhotos.filter((p) => p.id !== id),
+    })),
 }));

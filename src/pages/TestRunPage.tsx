@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnalogGauge } from '../components/AnalogGauge';
+import { BatchPhotoCapture } from '../components/BatchPhotoCapture';
 import { HighVoltageWarningOverlay } from '../components/HighVoltageWarningOverlay';
 import {
   CURRENT_GAUGE_MAX_MA,
@@ -35,6 +36,8 @@ export function TestRunPage() {
   const resetStatusesToPending = useTestStore((s) => s.resetStatusesToPending);
   const markSelectedDone = useTestStore((s) => s.markSelectedDone);
   const setCompletedSerialNumbers = useTestStore((s) => s.setCompletedSerialNumbers);
+  const currentBatchNumber = useTestStore((s) => s.currentBatchNumber);
+  const resetBatch = useTestStore((s) => s.resetBatch);
 
   const itemIds = state.itemIds ?? [];
   const itemIdsKey = itemIds.join(',');
@@ -161,6 +164,7 @@ export function TestRunPage() {
   const handleAbort = () => {
     runnerRef.current?.abort();
     resetStatusesToPending(itemIds);
+    resetBatch();
     navigate('/');
   };
 
@@ -197,6 +201,11 @@ export function TestRunPage() {
       <HighVoltageWarningOverlay />
       <div className="test-run-content">
         <p className="test-run-label">Batch testing</p>
+        {currentBatchNumber && (
+          <p className="test-run-batch-number">
+            Batch no. <strong>{currentBatchNumber}</strong>
+          </p>
+        )}
         <p className="test-run-winding">
           {windingTotal > 0
             ? `Winding ${windingIndex} of ${windingTotal}`
@@ -249,6 +258,7 @@ export function TestRunPage() {
         </div>
         {countdownDisplay}
         <p className="test-countdown-label">{countdownLabel}</p>
+        <BatchPhotoCapture windingIndex={windingIndex} activeSerials={activeSerials} />
         <button type="button" className="btn btn-danger" onClick={handleAbort}>
           Abort test
         </button>

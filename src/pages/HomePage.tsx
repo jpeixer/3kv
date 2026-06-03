@@ -5,6 +5,7 @@ import { SerialQueueList } from '../components/SerialQueueList';
 import { ManualAddModal } from '../components/ManualAddModal';
 import { BarcodeScannerModal } from '../components/BarcodeScannerModal';
 import { HipotCommStatus } from '../components/HipotCommStatus';
+import { StartConfirmModal } from '../components/StartConfirmModal';
 import { formatSelectionWindingHint } from '../services/testRunner.mock';
 import { useTestStore } from '../store/useTestStore';
 import '../components/DurationSelector.css';
@@ -15,10 +16,14 @@ type ModalKind = 'manual' | 'barcode' | null;
 export function HomePage() {
   const navigate = useNavigate();
   const [modal, setModal] = useState<ModalKind>(null);
+  const [confirmStart, setConfirmStart] = useState(false);
   const selectedIds = useTestStore((s) => s.selectedIds);
   const serialItems = useTestStore((s) => s.serialItems);
+  const durationPerWindingSec = useTestStore((s) => s.durationPerWindingSec);
   const getSelectedItems = useTestStore((s) => s.getSelectedItems);
   const setItemStatus = useTestStore((s) => s.setItemStatus);
+  const startBatch = useTestStore((s) => s.startBatch);
+  const resetBatch = useTestStore((s) => s.resetBatch);
 
   const selectedItems = useMemo(
     () => serialItems.filter((i) => selectedIds.has(i.id)),
@@ -27,11 +32,23 @@ export function HomePage() {
   const canStart = selectedItems.length > 0;
   const selectionHint = formatSelectionWindingHint(selectedItems);
 
-  const handleStart = () => {
+  const handleStartClick = () => {
+    if (selectedItems.length === 0) return;
+    startBatch();
+    setConfirmStart(true);
+  };
+
+  const handleConfirmStart = () => {
     const items = getSelectedItems();
     if (items.length === 0) return;
     items.forEach((item) => setItemStatus(item.id, 'in_progress'));
+    setConfirmStart(false);
     navigate('/test', { state: { itemIds: items.map((i) => i.id) } });
+  };
+
+  const handleCancelStart = () => {
+    resetBatch();
+    setConfirmStart(false);
   };
 
   return (
@@ -79,7 +96,7 @@ export function HomePage() {
           type="button"
           className="btn btn-start"
           disabled={!canStart}
-          onClick={handleStart}
+          onClick={handleStartClick}
         >
           START
         </button>
@@ -90,6 +107,14 @@ export function HomePage() {
         <BarcodeScannerModal
           onClose={() => setModal(null)}
           onManualEntry={() => setModal('manual')}
+        />
+      )}
+      {confirmStart && (
+        <StartConfirmModal
+          items={selectedItems}
+          durationSec={durationPerWindingSec}
+          onConfirm={handleConfirmStart}
+          onCancel={handleCancelStart}
         />
       )}
     </div>

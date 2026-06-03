@@ -68,6 +68,17 @@
   font-size: 0.95rem;
 }
 
+.test-run-batch-number {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.test-run-batch-number strong {
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
 .test-run-winding {
   margin: 0 0 0.5rem;
   font-size: 1.25rem;

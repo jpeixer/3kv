@@ -7,6 +7,15 @@ export type SerialItem = {
   status: SerialStatus;
 };
 
+export type BatchPhoto = {
+  id: string;
+  batchNumber: string;
+  dataUrl: string;
+  capturedAt: string;
+  windingIndex?: number;
+  serialNumbers?: string[];
+};
+
 export type TestRunnerEvent =
   | {
       type: 'windingStarted';

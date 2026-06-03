@@ -1,0 +1,29 @@
+.photo-camera-modal {
+  max-width: 520px;
+}
+
+.photo-camera-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #000;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.photo-camera-preview video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.photo-camera-preview video.ready {
+  opacity: 1;
+}
+
+.photo-camera-actions {
+  flex-wrap: wrap;
+}

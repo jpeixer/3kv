@@ -12,11 +12,13 @@ export function BarcodeScannerModal({ onClose, onManualEntry }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [scannedSerial, setScannedSerial] = useState<string | null>(null);
+  const [cameraReady, setCameraReady] = useState(false);
   const controlsRef = useRef<{ stop: () => void } | null>(null);
 
   const stopScanner = () => {
     controlsRef.current?.stop();
     controlsRef.current = null;
+    setCameraReady(false);
   };
 
   useEffect(() => {
@@ -27,16 +29,10 @@ export function BarcodeScannerModal({ onClose, onManualEntry }: Props) {
 
     const start = async () => {
       try {
-        const devices = await BrowserMultiFormatReader.listVideoInputDevices();
-        const deviceId = devices[0]?.deviceId;
-        if (!deviceId) {
-          setCameraError('No camera found. Use manual entry instead.');
-          return;
-        }
         if (!videoRef.current) return;
 
-        const controls = await reader.decodeFromVideoDevice(
-          deviceId,
+        const controls = await reader.decodeFromConstraints(
+          { video: { facingMode: { ideal: 'environment' } } },
           videoRef.current,
           (result) => {
             if (!active || scannedSerial) return;
@@ -51,8 +47,36 @@ export function BarcodeScannerModal({ onClose, onManualEntry }: Props) {
           },
         );
         controlsRef.current = controls;
+        setCameraReady(true);
       } catch {
-        setCameraError('Camera access denied. Use manual entry instead.');
+        try {
+          const devices = await BrowserMultiFormatReader.listVideoInputDevices();
+          const backCamera =
+            devices.find((d) => /back|rear|environment/i.test(d.label)) ?? devices[0];
+          if (!backCamera?.deviceId || !videoRef.current) {
+            setCameraError('No camera found. Use manual entry instead.');
+            return;
+          }
+          const controls = await reader.decodeFromVideoDevice(
+            backCamera.deviceId,
+            videoRef.current,
+            (result) => {
+              if (!active || scannedSerial) return;
+              if (result) {
+                const text = result.getText().trim();
+                if (text) {
+                  active = false;
+                  stopScanner();
+                  setScannedSerial(text);
+                }
+              }
+            },
+          );
+          controlsRef.current = controls;
+          setCameraReady(true);
+        } catch {
+          setCameraError('Camera access denied. Use manual entry instead.');
+        }
       }
     };
 
@@ -83,12 +107,21 @@ export function BarcodeScannerModal({ onClose, onManualEntry }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <h2 id="scan-title">Scan barcode</h2>
-        <p className="scan-hint">Align barcode in frame</p>
+        <p className="scan-hint">Center the barcode inside the frame</p>
         {cameraError ? (
           <p className="form-error">{cameraError}</p>
         ) : (
           <div className="scan-preview">
-            <video ref={videoRef} muted playsInline />
+            <video ref={videoRef} muted playsInline autoPlay className={cameraReady ? 'ready' : ''} />
+            <div className="scan-mask" aria-hidden>
+              <div className="scan-frame">
+                <span className="scan-corner scan-corner-tl" />
+                <span className="scan-corner scan-corner-tr" />
+                <span className="scan-corner scan-corner-bl" />
+                <span className="scan-corner scan-corner-br" />
+              </div>
+              <p className="scan-frame-label">Align barcode here</p>
+            </div>
           </div>
         )}
         <div className="modal-actions scan-actions">
