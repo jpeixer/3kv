@@ -9,6 +9,7 @@ Web UI portal for **withstand voltage test in secondary windings**. All operator
 - **Add serial manually** or **scan barcode** (webcam via `@zxing/browser`)
 - **START**: mixed winding counts allowed — batch runs winding 1 on all units, then 2, etc.; from winding 4 onward only serials with enough secondaries are energized
 - **High voltage warning**: fullscreen yellow/red flashing border and `ATTENTION — HIGH VOLTAGE` banner during the test
+- **Embedded mode**: when loaded inside the 3kv3dd Unity viewer iframe, posts `3kv:safety` messages to drive tower lamp (red blink + buzzer) on the 3D machine
 - **Voltage & current gauges** (mock): 0–5 kV and 0–100 mA; ramp to 3 kV in 1/6 of selected duration, then oscillate 3.0–3.1 kV; countdown starts only at 3 kV plateau; current = 20 mA × energized serials
 - **Hipot communication LED** on home: click to configure IP and/or RS-485 (saved locally; simulated OK by default)
 - **TEST APPROVED**: fullscreen green success screen when the batch completes (mock pass)
